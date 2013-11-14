@@ -76,16 +76,33 @@ require_once(TR_INCLUDE_PATH.'classes/CoursesUtility.class.php');
 			<td align="left"><label for="description"><?php echo _AT('description'); ?></label></td>
 			<td align="left"><textarea id="description" cols="45" rows="2" name="description"><?php if (isset($_POST['description'])) echo stripslashes(htmlspecialchars($_POST['description'])); else echo stripslashes(htmlspecialchars($this->course_row['description'])); ?></textarea></td>
 		</tr>
+                
+                
 		
                 <tr>
- 	  	
-
-                        <td align="left"><label for="copyright"><?php echo _AT('course_copyright'); ?></label></td>	  	
-
-                        <td align="left"><textarea name="copyright" rows="2" cols="65" id="copyright"><?php if (isset($_POST['copyright'])) echo stripslashes(htmlspecialchars($_POST['copyright'])); else echo stripslashes(htmlspecialchars($this->course_row['copyright'])); ?></textarea></td>
- 	
-
+                        <td align="left"><label for="copyright"><?php echo _AT('course_copyright'); ?></label></td>
+                            <td><select id='copyright_index'>
+                                <?php
+                                    $xml = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
+                                    $copyright_number = 0;
+                                    foreach($xml->copyright as $copyright)
+                                    {
+                                        $copyright_number++;
+                                        echo '<option value="copyright'.$copyright_number.'">'.$copyright->title.'</option>';
+                                    }
+                                ?>
+                            </select></td>
+                </tr>   
+                <tr>
+                        <td></td><td align="left"><textarea name="copyright" rows="6" cols="65" id="copyright" style="display:none">
+                            <?php
+                                if (isset($_POST['copyright']))
+                                    echo stripslashes(htmlspecialchars($_POST['copyright']));
+                                else echo stripslashes(htmlspecialchars($this->course_row['copyright']));
+                            ?>
+                        </textarea></td>
                 </tr>
+                
                 <tr>
                         <td colspan="2" align="left">
 
@@ -117,3 +134,32 @@ require_once(TR_INCLUDE_PATH.'classes/CoursesUtility.class.php');
 </fieldset>
 </div>
 </form>
+
+        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" ></script>
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#copyright_index').change(function () {
+                    var isFirstSelected = $("#copyright_index option:first-child" ).is(':selected');
+                    var isSecondSelected = $("#copyright_index option:first-child" ).next().is(':selected');
+                    var isLastSelected = $("#copyright_index option:last-child" ).is(':selected');
+                    var copyright_index_selected = $("#copyright_index option:selected").text();
+                    
+                    if (isFirstSelected || isSecondSelected) {
+                        $('#copyright').hide();
+                    } else {
+                        $('#copyright').show();
+                        $('#copyright').attr("readonly",isLastSelected?false:true);
+                    }
+                    
+                    $.ajax({ type: "GET", url: "include/copyrights/copyrights.xml", dataType: "xml", success: function(xml) {
+                        $(xml).find('copyright').each(function() {
+                          if (copyright_index_selected === $(this).find('title').text()) {
+                              $('#copyright').text($(this).find('text').text());
+                          }
+                        });
+                      },
+                      error: function(request, error, tipo_errore) { alert(error+': '+ tipo_errore); }
+                    });
+                });
+            });
+        </script>
