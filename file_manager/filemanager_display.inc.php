@@ -202,8 +202,9 @@ if (TRUE || $framed != TRUE) {
             <table class="fl-uploader-header">
            		<tr>
 					<th class="fl-uploader-file-name">File Name</th>
+                                        <th class="fl-uploader-file-copyright">Copyright</th>
 					<th class="fl-uploader-file-size">Size</th>
-					<th class="fl-uploader-file-actions"></th>
+					<th class="fl-uploader-file-actions">DEL</th>
 				</tr>
             </table>
             
@@ -214,6 +215,18 @@ if (TRUE || $framed != TRUE) {
 					<!-- Template for file row -->
 					<tr class="flc-uploader-file-tmplt flc-uploader-file">
 						<td class="flc-uploader-file-name fl-uploader-file-name">File Name Placeholder</td>
+                                                <td class="flc-uploader-file-copyright fl-uploader-file-copyright">
+                                                    <select id='copy_index'>
+                                                        <?php
+                                                            $xml1 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
+                                                            foreach($xml1->copyright as $copyright)
+                                                                if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
+                                                            
+                                                            
+                                                            
+                                                        ?>
+                                                    </select>
+                                                </td>
 						<td class="flc-uploader-file-size fl-uploader-file-size">0 KB</td>
 						<td class="fl-uploader-file-actions">
 							<button type="button" class="flc-uploader-file-action" tabindex="-1"></button>
@@ -272,6 +285,56 @@ if (TRUE || $framed != TRUE) {
                      </div>
                  </div>                
             </div>
+            
+            <br><tr>
+                    <td align="left"><label for="copyright">Copyright info: </label></td>
+                    <td align="left">
+                        <select id='copyright_index'>
+                            <?php
+                                $xml2 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
+                                foreach($xml2->copyright as $copyright)
+                                    if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
+                            ?>
+                        </select>
+                    </td>
+            </tr>
+            <tr>
+                    <td></td><td>
+                        <textarea id='copyright' rows="6" cols="65" style="display:none">
+                            <?php
+
+                            ?>
+                        </textarea>
+                    </td>
+            </tr><br><br>
+        
+            <script type="text/javascript">
+                $(document).ready(function() {
+                    $('#copyright_index').change(function () {
+                        var isFirstSelected = $("#copyright_index option:first-child" ).is(':selected');
+                        var isSecondSelected = $("#copyright_index option:first-child" ).next().is(':selected');
+                        var copyright_title_selected = $("#copyright_index option:selected").text();
+
+                        $('#copyright').attr("readonly",true);
+
+                        if (isFirstSelected || isSecondSelected) {
+                            $('#copyright').hide();
+                        } else {
+                            $('#copyright').show();
+                        }
+
+                        $.ajax({ type: "GET", url: "include/copyrights/copyrights.xml", dataType: "xml", success: function(xml) {
+                            $(xml).find('copyright').each(function() {
+                              if (copyright_title_selected === $(this).find('title').text()) {
+                                  $('#copyright').text($(this).find('text').text());
+                              }
+                            });
+                          },
+                          error: function(request, error, tipo_errore) { alert(error+': '+ tipo_errore); }
+                        });
+                    });
+                });
+            </script>
             
             <!-- Upload buttons -->
             <div class="fl-uploader-buttons">
@@ -407,181 +470,187 @@ if ($a_type > 0) {
 </div>
 <?php }?>
 
-<table class="data static" summary="" border="0" rules="groups" style="width: 90%">
-<thead>
-<tr>
-<td colspan="5">
-<?php fm_path(); ?>
-</td>
-</tr>
-<tr>
-	<th scope="col"><input type="checkbox" name="checkall" onclick="Checkall(checkform);" id="selectall" title="<?php echo _AT('select_all'); ?>" /></th>
-	<th>&nbsp;</th>
-	<th scope="col"><?php echo _AT('name');   ?></th>
-	<th scope="col"><?php echo _AT('date');   ?></th>
-	<th scope="col"><?php echo _AT('size');   ?></th>
-</tr>
-</thead>
-<tfoot>
-<tr>
-	<td colspan="5"><input type="submit" name="rename" value="<?php echo _AT('rename'); ?>" /> 
-		<input type="submit" name="delete" value="<?php echo _AT('delete'); ?>" /> 
-		<input type="submit" name="move"   value="<?php echo _AT('move'); ?>" /></td>
-</tr>
+<table class="data static" align="left" summary="" border="0" rules="groups" style="margin-left: 180px; width: 700px">
 
-<tr>
-	<td colspan="4" align="right"><strong><?php echo _AT('directory_total'); ?>:</strong></td>
-	<td align="right">&nbsp;<strong><?php echo FileUtility::get_human_size(FileUtility::dirsize($current_path.$pathext.$file.'/')); ?></strong>&nbsp;</td>
-</tr>
+    <thead>
+        <tr>
+            <td colspan="5">
+            <?php fm_path(); ?>
+            </td>
+        </tr>
+        <tr>
+                <th scope="col" style="width: 5px"><input type="checkbox" name="checkall" onclick="Checkall(checkform);" id="selectall" title="<?php echo _AT('select_all'); ?>" /></th>
+                <th style="width: 5px">&nbsp;</th>
+                <th scope="col" style="width: 70px"><?php echo _AT('name');   ?></th>
+                <th scope="col" style="text-align: center; width: 70px">Copyright</th>
+                <th scope="col" style="text-align: center; width: 70px"><?php echo _AT('date');   ?></th>
+                <th scope="col" style="text-align: center; width: 70px"><?php echo _AT('size');   ?></th>
+        </tr>
+    </thead>
+    
+    <tfoot>
+        <tr>
+                <td colspan="6">
+                    <input type="submit" name="rename" value="<?php echo _AT('rename'); ?>" /> 
+                    <input type="submit" name="delete" value="<?php echo _AT('delete'); ?>" /> 
+                    <input type="submit" name="move"   value="<?php echo _AT('move'); ?>" />
+                </td>
+        </tr>
+        <tr>
+                <td colspan="5" align="right"><strong><?php echo _AT('directory_total'); ?>:</strong></td>
+                <td align="right">&nbsp;<strong><?php echo FileUtility::get_human_size(FileUtility::dirsize($current_path.$pathext.$file.'/')); ?></strong>&nbsp;</td>
+        </tr>
+        <tr>
+                <td colspan="5" align="right"><strong><?php echo _AT('course_total'); ?>:</strong></td>
+                <td align="right">&nbsp;<strong><?php echo FileUtility::get_human_size($course_total); ?></strong>&nbsp;</td>
+        </tr>
+        <tr>
+                <td colspan="5" align="right"><strong><?php echo _AT('course_available'); ?>:</strong></td>
+                <td align="right"><strong><?php
+                        if ($my_MaxCourseSize == TR_COURSESIZE_UNLIMITED) {
+                                echo _AT('unlimited');
+                        } else if ($my_MaxCourseSize == TR_COURSESIZE_DEFAULT) {
+                                echo FileUtility::get_human_size($MaxCourseSize-$course_total);
+                        } else {
+                                echo FileUtility::get_human_size($my_MaxCourseSize-$course_total);
+                        } ?></strong>&nbsp;</td>
+        </tr>
+    </tfoot>
+    
+    <?php if($pathext) : ?>
+        <tr>
+            <td colspan="5"><a href="<?php echo $_SERVER['PHP_SELF'].'?back=1'.SEP.'pathext='.$pathext.SEP. 'popup=' . $popup .SEP. 'framed=' . $framed .SEP.'cp='.$_GET['cp'].SEP.'pid='.$_GET['pid'].SEP.'_cid='.$cid.SEP.'a_type='.$a_type.SEP.'_course_id='.$_course_id; ?>"><img src="images/arrowicon.gif" border="0" height="11" width="10" alt="" /> <?php echo _AT('back'); ?></a></td>
+        </tr>
+    <?php endif; ?>
 
-<tr>
-	<td colspan="4" align="right"><strong><?php echo _AT('course_total'); ?>:</strong></td>
-	<td align="right">&nbsp;<strong><?php echo FileUtility::get_human_size($course_total); ?></strong>&nbsp;</td>
-</tr>
-<tr>
-	<td colspan="4" align="right"><strong><?php echo _AT('course_available'); ?>:</strong></td>
-	<td align="right"><strong><?php
-		if ($my_MaxCourseSize == TR_COURSESIZE_UNLIMITED) {
-			echo _AT('unlimited');
-		} else if ($my_MaxCourseSize == TR_COURSESIZE_DEFAULT) {
-			echo FileUtility::get_human_size($MaxCourseSize-$course_total);
-		} else {
-			echo FileUtility::get_human_size($my_MaxCourseSize-$course_total);
-		} ?></strong>&nbsp;</td>
-</tr>
-</tfoot>
-<?php
+    <?php
+
+    $totalBytes = 0;
+
+    if ($dir == '')
+            $dir=opendir($current_path);
+
+    // loop through folder to get files and directory listing
+    while (false !== ($file = readdir($dir)) ) {
+
+            // if the name is not a directory 
+            if( ($file == '.') || ($file == '..') ) {
+                    continue;
+            }
+
+            // get some info about the file
+            $filedata = stat($current_path.$pathext.$file);
+            $path_parts = pathinfo($file);
+            $ext = strtolower($path_parts['extension']);
+
+            $is_dir = false;
+
+            // if it is a directory change the file name to a directory link 
+            if(is_dir($current_path.$pathext.$file)) {
+                    $size = FileUtility::dirsize($current_path.$pathext.$file.'/');
+                    $totalBytes += $size;
+                    $filename = '<a href="'.$_SERVER['PHP_SELF'].'?pathext='.urlencode($pathext.$file.'/'). SEP . 'popup=' . $popup . SEP . 'framed='. $framed . SEP.'cp='.$_GET['cp'].SEP.'pid='.$_GET['pid'].SEP.'_cid='.$cid.SEP.'a_type='.$a_type.SEP.'_course_id='.$_course_id.'">'.$file.'</a>';
+                    $fileicon = '&nbsp;';
+                    $fileicon .= '<img src="images/folder.gif" alt="'._AT('folder').':'.$file.'" height="18" width="20" class="img-size-fm1" />';
+                    $fileicon .= '&nbsp;';
+                    if(!$MakeDirOn) {
+                            $deletelink = '';
+                    }
+
+                    $is_dir = true;
+            } else if ($ext == 'zip') {
+
+                    $totalBytes += $filedata[7];
+                    $filename = $file;
+                    $fileicon = '&nbsp;<img src="images/icon-zip.gif" alt="'._AT('zip_archive').':'.$file.'" height="16" width="16" border="0" class="img-size-fm2" />&nbsp;';
+
+            } else {
+                    $totalBytes += $filedata[7];
+                    $filename = $file;
+                    $fileicon = '&nbsp;<img src="images/file_types/'.get_file_type_icon($filename).'.gif" height="16" width="16" alt="" title="" class="img-size-fm2" />&nbsp;';
+            } 
+            $file1 = strtolower($file);
+            // create listing for dirctor or file
+            if ($is_dir) {
+
+                    $dirs[$file1] .= '<tr><td  align="center" width="0%">';
+                    $dirs[$file1] .= '<input type="checkbox" id="'.$file.'" value="'.$file.'" name="check[]"/></td>';
+                    $dirs[$file1] .= '<td  align="center"><label for="'.$file.'" >'.$fileicon.'</label></td>';
+                    $dirs[$file1] .= '<td >&nbsp;';
+                    $dirs[$file1] .= $filename.'</td>';
+                    $dirs[$file1] .= '<td  align="right">&nbsp;';
+                    $dirs[$file1] .= AT_date(_AT('filemanager_date_format'), $filedata[10], TR_DATE_UNIX_TIMESTAMP);
+                    $dirs[$file1] .= '&nbsp;</td>';
+                    $dirs[$file1] .= '<td  align="right">';
+                    $dirs[$file1] .= FileUtility::get_human_size($size).'</td></tr>';
 
 
-if($pathext) : ?>
-	<tr>
-		<td colspan="5"><a href="<?php echo $_SERVER['PHP_SELF'].'?back=1'.SEP.'pathext='.$pathext.SEP. 'popup=' . $popup .SEP. 'framed=' . $framed .SEP.'cp='.$_GET['cp'].SEP.'pid='.$_GET['pid'].SEP.'_cid='.$cid.SEP.'a_type='.$a_type.SEP.'_course_id='.$_course_id; ?>"><img src="images/arrowicon.gif" border="0" height="11" width="10" alt="" /> <?php echo _AT('back'); ?></a></td>
-	</tr>
-<?php endif; ?>
-<?php
-$totalBytes = 0;
+            } else {
+                    $files[$file1] .= '<tr><td style="width: 5px"><input type="checkbox" id="'.$file.'" value="'.$file.'" name="check[]"/> </td>';
+                    $files[$file1] .= '<td align="center" style="width: 5px"><label for="'.$file.'">'.$fileicon.'</label></td>';
+                    $files[$file1] .= '<td >&nbsp;';
 
-if ($dir == '')
-	$dir=opendir($current_path);
-	
-// loop through folder to get files and directory listing
-while (false !== ($file = readdir($dir)) ) {
+                    if ($framed) {
+                            $files[$file1] .= '<a href="'.$get_file.$pathext.urlencode($filename).'">'.$filename.'</a>';
+                    } else {
+                            $files[$file1] .= '<a href="file_manager/preview.php?file='.$pathext.$filename.SEP.'pathext='.urlencode($pathext).SEP.'popup='.$popup.SEP.'_course_id='.$_course_id.'">'.$filename.'</a>';
+                    }
 
-	// if the name is not a directory 
-	if( ($file == '.') || ($file == '..') ) {
-		continue;
-	}
+                    if ($ext == 'zip') {
+                            $files[$file1] .= ' <a href="file_manager/zip.php?'.(($pathext!='') ? 'pathext='.urlencode($pathext).SEP : ''). 'file=' . urlencode($file) . SEP . 'popup=' . $popup . SEP . 'framed=' . $framed .SEP.'_course_id='.$_course_id.'">';
+                            $files[$file1] .= '<img src="images/archive.gif" border="0" alt="'._AT('extract_archive').'" title="'._AT('extract_archive').'"height="16" width="11" class="img-size-fm3" />';
+                            $files[$file1] .= '</a>';
+                    }
 
-	// get some info about the file
-	$filedata = stat($current_path.$pathext.$file);
-	$path_parts = pathinfo($file);
-	$ext = strtolower($path_parts['extension']);
+                    if (in_array($ext, $editable_file_types)) {
+                            $files[$file1] .= ' <a href="file_manager/edit.php?'.(($pathext!='') ? 'pathext='.urlencode($pathext).SEP : ''). 'popup=' . $popup . SEP . 'framed=' . $framed . SEP.'_course_id='.$_course_id. SEP . 'file=' . urlencode($file) . '">';
+                            $files[$file1] .= '<img src="images/edit.gif" border="0" alt="'._AT('edit').'" title="'._AT('edit').'" height="15" width="18" class="img-size-fm4" />';
+                            $files[$file1] .= '</a>';
+                    }
 
-	$is_dir = false;
+                    $files[$file1] .= '&nbsp;</td>';
 
-	// if it is a directory change the file name to a directory link 
-	if(is_dir($current_path.$pathext.$file)) {
-		$size = FileUtility::dirsize($current_path.$pathext.$file.'/');
-		$totalBytes += $size;
-		$filename = '<a href="'.$_SERVER['PHP_SELF'].'?pathext='.urlencode($pathext.$file.'/'). SEP . 'popup=' . $popup . SEP . 'framed='. $framed . SEP.'cp='.$_GET['cp'].SEP.'pid='.$_GET['pid'].SEP.'_cid='.$cid.SEP.'a_type='.$a_type.SEP.'_course_id='.$_course_id.'">'.$file.'</a>';
-		$fileicon = '&nbsp;';
-		$fileicon .= '<img src="images/folder.gif" alt="'._AT('folder').':'.$file.'" height="18" width="20" class="img-size-fm1" />';
-		$fileicon .= '&nbsp;';
-		if(!$MakeDirOn) {
-			$deletelink = '';
-		}
+                    $files[$file1] .= '<td align="center">Copyright</td>';
 
-		$is_dir = true;
-	} else if ($ext == 'zip') {
+                    $files[$file1] .= '<td align="center" style="white-space:nowrap">';
 
-		$totalBytes += $filedata[7];
-		$filename = $file;
-		$fileicon = '&nbsp;<img src="images/icon-zip.gif" alt="'._AT('zip_archive').':'.$file.'" height="16" width="16" border="0" class="img-size-fm2" />&nbsp;';
+                    if ($popup == TRUE) {
+                            if ($a_type > 0)  // define content alternative
+                            {
+                                    $files[$file1] .= '<input class="button" type="button" name="alternative" value="' ._AT('use_as_alternative') . '" onclick="javascript: setAlternative(\''.get_relative_path($_GET['cp'], $pathext).$file.'\', \''.TR_BASE_HREF.$get_file.$pathext.urlencode($file).'\', \''.$cid.'\', \''.$pid.'\', \''.$a_type.'\');" />&nbsp;';
+                            }
+                            else
+                                    $files[$file1] .= '<input class="button" type="button" name="insert" value="' ._AT('insert') . '" onclick="javascript:insertFile(\'' . $file . '\', \'' . get_relative_path($_GET['cp'], $pathext) . '\', \'' . $ext . '\', \'' .$_SESSION['prefs']['PREF_CONTENT_EDITOR']. '\');" />&nbsp;';
+                    }
 
-	} else {
-		$totalBytes += $filedata[7];
-		$filename = $file;
-		$fileicon = '&nbsp;<img src="images/file_types/'.get_file_type_icon($filename).'.gif" height="16" width="16" alt="" title="" class="img-size-fm2" />&nbsp;';
-	} 
-	$file1 = strtolower($file);
-	// create listing for dirctor or file
-	if ($is_dir) {
-		
-		$dirs[$file1] .= '<tr><td  align="center" width="0%">';
-		$dirs[$file1] .= '<input type="checkbox" id="'.$file.'" value="'.$file.'" name="check[]"/></td>';
-		$dirs[$file1] .= '<td  align="center"><label for="'.$file.'" >'.$fileicon.'</label></td>';
-		$dirs[$file1] .= '<td >&nbsp;';
-		$dirs[$file1] .= $filename.'</td>';
-		$dirs[$file1] .= '<td  align="right">&nbsp;';
-		$dirs[$file1] .= AT_date(_AT('filemanager_date_format'), $filedata[10], TR_DATE_UNIX_TIMESTAMP);
-		$dirs[$file1] .= '&nbsp;</td>';
-		$dirs[$file1] .= '<td  align="right">';
-		$dirs[$file1] .= FileUtility::get_human_size($size).'</td></tr>';
+                    $files[$file1] .= AT_date(_AT('filemanager_date_format'), $filedata[10], TR_DATE_UNIX_TIMESTAMP);
+                    $files[$file1] .= '&nbsp;</td>';
 
-		
-	} else {
-		$files[$file1] .= '<tr> <td  align="center">';
-		$files[$file1] .= '<input type="checkbox" id="'.$file.'" value="'.$file.'" name="check[]"/> </td>';
-		$files[$file1] .= '<td  align="center"><label for="'.$file.'">'.$fileicon.'</label></td>';
-		$files[$file1] .= '<td >&nbsp;';
+                    $files[$file1] .= '<td  align="center" style="white-space:nowrap">';
+                    $files[$file1] .= FileUtility::get_human_size($filedata[7]).'</td></tr>';
+            }
+    } // end while
 
-		if ($framed) {
-			$files[$file1] .= '<a href="'.$get_file.$pathext.urlencode($filename).'">'.$filename.'</a>';
-		} else {
-			$files[$file1] .= '<a href="file_manager/preview.php?file='.$pathext.$filename.SEP.'pathext='.urlencode($pathext).SEP.'popup='.$popup.SEP.'_course_id='.$_course_id.'">'.$filename.'</a>';
-		}
+    // sort listing and output directories
+    if (is_array($dirs)) {
+            ksort($dirs, SORT_STRING);
+            foreach($dirs as $x => $y) {
+                    echo $y;
+            }
+    }
 
-		if ($ext == 'zip') {
-			$files[$file1] .= ' <a href="file_manager/zip.php?'.(($pathext!='') ? 'pathext='.urlencode($pathext).SEP : ''). 'file=' . urlencode($file) . SEP . 'popup=' . $popup . SEP . 'framed=' . $framed .SEP.'_course_id='.$_course_id.'">';
-			$files[$file1] .= '<img src="images/archive.gif" border="0" alt="'._AT('extract_archive').'" title="'._AT('extract_archive').'"height="16" width="11" class="img-size-fm3" />';
-			$files[$file1] .= '</a>';
-		}
-
-		if (in_array($ext, $editable_file_types)) {
-			$files[$file1] .= ' <a href="file_manager/edit.php?'.(($pathext!='') ? 'pathext='.urlencode($pathext).SEP : ''). 'popup=' . $popup . SEP . 'framed=' . $framed . SEP.'_course_id='.$_course_id. SEP . 'file=' . urlencode($file) . '">';
-			$files[$file1] .= '<img src="images/edit.gif" border="0" alt="'._AT('edit').'" title="'._AT('edit').'" height="15" width="18" class="img-size-fm4" />';
-			$files[$file1] .= '</a>';
-		}
-
-		$files[$file1] .= '&nbsp;</td>';
-
-		$files[$file1] .= '<td  align="right" style="white-space:nowrap">';
-
-		if ($popup == TRUE) {
-			if ($a_type > 0)  // define content alternative
-			{
-				$files[$file1] .= '<input class="button" type="button" name="alternative" value="' ._AT('use_as_alternative') . '" onclick="javascript: setAlternative(\''.get_relative_path($_GET['cp'], $pathext).$file.'\', \''.TR_BASE_HREF.$get_file.$pathext.urlencode($file).'\', \''.$cid.'\', \''.$pid.'\', \''.$a_type.'\');" />&nbsp;';
-			}
-			else
-				$files[$file1] .= '<input class="button" type="button" name="insert" value="' ._AT('insert') . '" onclick="javascript:insertFile(\'' . $file . '\', \'' . get_relative_path($_GET['cp'], $pathext) . '\', \'' . $ext . '\', \'' .$_SESSION['prefs']['PREF_CONTENT_EDITOR']. '\');" />&nbsp;';
-		}
-
-		$files[$file1] .= AT_date(_AT('filemanager_date_format'), $filedata[10], TR_DATE_UNIX_TIMESTAMP);
-		$files[$file1] .= '&nbsp;</td>';
-		
-		$files[$file1] .= '<td  align="right" style="white-space:nowrap">';
-		$files[$file1] .= FileUtility::get_human_size($filedata[7]).'</td></tr>';
-	}
-} // end while
-
-// sort listing and output directories
-if (is_array($dirs)) {
-	ksort($dirs, SORT_STRING);
-	foreach($dirs as $x => $y) {
-		echo $y;
-	}
-}
-
-//sort listing and output files
-if (is_array($files)) {
-	ksort($files, SORT_STRING);
-	foreach($files as $x => $y) {
-		echo $y;
-	}
-}
+    //sort listing and output files
+    if (is_array($files)) {
+            ksort($files, SORT_STRING);
+            foreach($files as $x => $y) {
+                    echo $y;
+            }
+    }
 
 echo '</table></form>';
 ?>
+
+
 
 <script type="text/javascript">
 //<!--

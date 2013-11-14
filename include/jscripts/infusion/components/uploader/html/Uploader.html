@@ -53,8 +53,9 @@
             <table class="fl-uploader-header">
            		<tr>
 					<th class="fl-uploader-file-name">File Name</th>
+                                        <th class="fl-uploader-file-copyright">Copyright</th>
 					<th class="fl-uploader-file-size">Size</th>
-					<th class="fl-uploader-file-actions"></th>
+					<th class="fl-uploader-file-actions">DEL</th>
 				</tr>
             </table>
             
@@ -65,6 +66,18 @@
 					<!-- Template for file row -->
 					<tr class="flc-uploader-file-tmplt flc-uploader-file">
 						<td class="flc-uploader-file-name fl-uploader-file-name">File Name Placeholder</td>
+                                                <td class="flc-uploader-file-copyright fl-uploader-file-copyright">
+                                                    <select id='copy_index'>
+                                                        <?php
+                                                            $xml1 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
+                                                            foreach($xml1->copyright as $copyright)
+                                                                if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
+                                                            
+                                                            
+                                                            
+                                                        ?>
+                                                    </select>
+                                                </td>
 						<td class="flc-uploader-file-size fl-uploader-file-size">0 KB</td>
 						<td class="fl-uploader-file-actions">
 							<button type="button" class="flc-uploader-file-action" tabindex="-1"></button>
