@@ -218,6 +218,7 @@ if (TRUE || $framed != TRUE) {
                                                 <td class="flc-uploader-file-copyright fl-uploader-file-copyright">
                                                     <select id='copy_index'>
                                                         <?php
+                                                            //$copy_index++;
                                                             $xml1 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                                             foreach($xml1->copyright as $copyright)
                                                                 if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
@@ -300,7 +301,7 @@ if (TRUE || $framed != TRUE) {
                         <textarea id='copyright' rows="6" cols="65" style="display:none"></textarea>
                     </td>
             </tr><br><br>
-        
+            
             <script type="text/javascript">
                 $(document).ready(function() {
                     $('#copyright_index').change(function () {
@@ -333,19 +334,12 @@ if (TRUE || $framed != TRUE) {
                 $(document).ready(function() {
                     $('#copy_index').change(function () {
                         var copy_title_selected = $("#copy_index option:selected").text();
-                        $.ajax({ type: "GET", url: "include/copyrights/copyrights.xml", dataType: "xml", success: function(xml) {
-                            $(xml).find('copyright').each(function() {
-                              if (copy_title_selected === $(this).find('title').text()) {
-                                  
-                              }
-                            });
-                          },
-                          error: function(request, error, tipo_errore) { alert(error+': '+ tipo_errore); }
-                        });
+                        //if(copy_title_selected === "free")
+                            alert("Hello!");
                     });
                 });
             </script>
-                                                            
+            
             
             <!-- Upload buttons -->
             <div class="fl-uploader-buttons">

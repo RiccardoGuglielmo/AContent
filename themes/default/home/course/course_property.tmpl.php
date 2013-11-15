@@ -135,7 +135,6 @@ require_once(TR_INCLUDE_PATH.'classes/CoursesUtility.class.php');
 </div>
 </form>
 
-        <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.min.js" ></script>
         <script type="text/javascript">
             $(document).ready(function() {
                 $('#copyright_index').change(function () {

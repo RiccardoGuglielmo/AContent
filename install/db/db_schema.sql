@@ -41,6 +41,16 @@ CREATE TABLE `content` (
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8;
 
 # --------------------------------------------------------
+# Table structure for table `content_copyright_of_file`
+
+CREATE TABLE `content_copyright_of_file` (
+  `course_id` INTEGER unsigned NOT NULL ,
+  `filename` VARCHAR(255) NOT NULL,
+  `capyright` VARCHAR(255) NOT NULL,
+  PRIMARY KEY  (`course_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+# --------------------------------------------------------
 # Table structure for table `content_forums_assoc`
 
 CREATE TABLE `content_forums_assoc` (
