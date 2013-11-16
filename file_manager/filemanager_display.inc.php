@@ -208,6 +208,8 @@ if (TRUE || $framed != TRUE) {
 				</tr>
             </table>
             
+            <?php $copy_index_id = 1; ?>
+            
             <!-- File Queue body, which is the default container for the FileQueueView component -->
             <table summary="The list of files" class="flc-uploader-queue fl-uploader-queue">
 				<caption>File Upload Queue:</caption>
@@ -216,9 +218,9 @@ if (TRUE || $framed != TRUE) {
 					<tr class="flc-uploader-file-tmplt flc-uploader-file">
 						<td class="flc-uploader-file-name fl-uploader-file-name">File Name Placeholder</td>
                                                 <td class="flc-uploader-file-copyright fl-uploader-file-copyright">
-                                                    <select id='copy_index'>
+                                                    <select id="copy_index<?php echo $copy_index_id; ?>">
                                                         <?php
-                                                            //$copy_index++;
+                                                            $copy_index_id++;
                                                             $xml1 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                                             foreach($xml1->copyright as $copyright)
                                                                 if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
@@ -285,7 +287,7 @@ if (TRUE || $framed != TRUE) {
             </div>
             
             <br><tr>
-                    <td><label for="copyright">Copyright info:</label></td>
+                    <td><label>Copyright info:</label></td>
                     <td>
                         <select id='copyright_index'>
                             <?php
@@ -317,16 +319,6 @@ if (TRUE || $framed != TRUE) {
                           },
                           error: function(request, error, tipo_errore) { alert(error+': '+ tipo_errore); }
                         });
-                    });
-                });
-            </script>
-            
-            <script type="text/javascript">
-                $(document).ready(function() {
-                    $('#copy_index').change(function () {
-                        var copy_title_selected = $("#copy_index option:selected").text();
-                        //if(copy_title_selected === "free")
-                            alert("Hello!");
                     });
                 });
             </script>
@@ -430,6 +422,23 @@ if (TRUE || $framed != TRUE) {
 		
 		echo '<label for="uploadedfile">'._AT('upload_files').'</label><br />'."\n";
 		echo '<input type="file" name="uploadedfile" id="uploadedfile" class="formfield" size="20" /> ';
+                ?><br><br><tr>
+                        <td><label>Copyright:</label></td>
+                        <td>
+                            <select id='copyright_index_sf'>
+                                <?php
+                                    $xml3 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
+                                    foreach($xml2->copyright as $copyright)
+                                        if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
+                                ?>
+                            </select>
+                        </td>
+                </tr>
+                <tr>
+                        <td>
+                            <textarea id='copyright_sf' rows="6" cols="65" style="display:none"></textarea>
+                        </td>
+                </tr><br><br><br><?php
 		echo '<input type="submit" name="submit" value="'._AT('upload').'" class="button" />';
 		echo '<input type="hidden" name="_course_id" value ="'.$_course_id.'" />';
 		echo '<input type="hidden" name="pathext" value="'.$pathext.'" />  ';
@@ -444,8 +453,33 @@ if (TRUE || $framed != TRUE) {
 		echo '	</fieldset></div>'."\n";
 		$msg->printInfos('OVER_QUOTA');
 	}
-}
+}?>
+                
+        <script type="text/javascript">
+            $(document).ready(function() {
+                $('#copyright_index_sf').change(function () {
+                    var isFirstSelected = $("#copyright_index_sf option:first-child" ).is(':selected');
+                    var copyright_index_selected = $("#copyright_index_sf option:selected").text();
+                    
+                    if (isFirstSelected) $('#copyright_sf').hide();
+                    else $('#copyright_sf').show();
+                        
+                    $('#copyright_sf').attr("readonly",true);
+                    $.ajax({ type: "GET", url: "include/copyrights/copyrights.xml", dataType: "xml", success: function(xml) {
+                        $(xml).find('copyright').each(function() {
+                          if (copyright_index_selected === $(this).find('title').text()) {
+                              $('#copyright_sf').text($(this).find('text').text());
+                          }
+                        });
+                      },
+                      error: function(request, error, tipo_errore) { alert(error+': '+ tipo_errore); }
+                    });
+                });
+            });
+        </script>
 
+        
+<?php
 
 // Directory and File listing 
 echo '<form name="checkform" action="'.$_SERVER['PHP_SELF'].'?'.(($pathext!='') ? 'pathext='.urlencode($pathext).SEP : '').'popup='.$popup .SEP. 'framed='.$framed.SEP.'cp='.$_GET['cp'].SEP.'pid='.$_GET['pid'].SEP.'_cid='.$cid.SEP.'a_type='.$a_type.'" method="post">';
@@ -480,7 +514,7 @@ if ($a_type > 0) {
                 <th scope="col" style="width: 140px"><?php echo _AT('name');   ?></th>
                 <th scope="col" style="text-align: center; width: 140px">Copyright</th>
                 <th scope="col" style="text-align: center; width: 70px"><?php echo _AT('date');   ?></th>
-                <th scope="col" style="text-align: center; width: 70px"><?php echo _AT('size');   ?></th>
+                <th scope="col" style="text-align: center; width: 100px"><?php echo _AT('size');   ?></th>
         </tr>
     </thead>
     
@@ -552,7 +586,7 @@ if ($a_type > 0) {
                     if(!$MakeDirOn) {
                             $deletelink = '';
                     }
-echo $filename; exit();
+                    
                     $is_dir = true;
             } else if ($ext == 'zip') {
 
@@ -605,8 +639,15 @@ echo $filename; exit();
                     }
 
                     $files[$file1] .= '&nbsp;</td>';
+                    
+                    //$copyright_index = $_POST['copy_index1'];
+                    //$query = 'INSERT INTO ac_content_copyright_of_file VALUES ('.$_course_id.',"'.$filename.'","'.$copyright_index.'")';
+                    //mysql_query($query);
+                    
+                    $query = 'SELECT copyright FROM ac_content_copyright_of_file WHERE course_id = '.$_course_id.' AND filename = '.$filename;
+                    $copyright = mysql_query($query);
 
-                    $files[$file1] .= '<td align="center" style="width: 250px">Copyright</td>';
+                    $files[$file1] .= '<td align="center" style="width: 250px">'.$copyright.'</td>';
 
                     $files[$file1] .= '<td align="center" style="white-space:nowrap">';
 
