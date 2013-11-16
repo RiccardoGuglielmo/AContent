@@ -6,20 +6,28 @@
         <text>Undefined</text>
     </copyright>
     <copyright>
-        <title>Free</title>
-        <text>Free</text>
+        <title>Creative Commons</title>
+        <text>Questa licenza permette a terzi di distribuire, modificare, ottimizzare ed utilizzare la tua opera come base, anche commercialmente, fino a che ti diano il credito per la creazione originale. Questa è la più accomodante delle licenze offerte. É raccomandata per la diffusione e l'uso massimo di materiali coperti da licenza.</text>
     </copyright>
     <copyright>
-        <title>Copyright1</title>
-        <text>Text1</text>
+        <title>Creative Commons - Condividi allo stesso modo</title>
+        <text>Questa licenza permette a terzi di modificare, ottimizzare ed utilizzare la tua opera come base, anche commercialmente, fino a che ti diano il credito per la creazione originale e autorizza le loro nuove creazioni con i medesimi termini. Questa licenza è spesso comparata con le licenze usate dai software opensource e gratuite "copyleft". Tutte le opere basate sulla tua porteranno la stessa licenza, quindi tutte le derivate permetteranno anche un uso commerciale. Questa è la licenza usata da Wikipedia, ed è consigliata per materiali che potrebbero beneficiare dell'incorporazione di contenuti da progetti come Wikipedia e similari.</text>
     </copyright>
     <copyright>
-        <title>Copyright2</title>
-        <text>Text2</text>
+        <title>Creative Commons - Non opere derivate</title>
+        <text>Questa licenza permette la ridistribuzione, commerciale e non, fintanto che viene trasmessa intera ed invariata, dandoti credito.</text>
     </copyright>
     <copyright>
-        <title>Copyright3</title>
-        <text>Text3</text>
+        <title>Creative Commons - Non commerciale</title>
+        <text>Questa licenza permette a terzi di modificare, ottimizzare ed utilizzare la tua opera come base per altre non commerciali, e benché le loro nuove opere dovranno accreditarti ed essere non commerciali, non devono licenziare le loro opere derivative con i medesimi termini.</text>
+    </copyright>
+    <copyright>
+        <title>Creative Commons - Non commerciale - Condividi allo stesso modo</title>
+        <text>Questa licenza permette a terzi di modificare, redistribuire, ottimizzare ed utilizzare la tua opera come base non commerciale, fino a che ti diano il credito e licenzino le loro nuove creazioni mediante i medesimi termini.</text>
+    </copyright>
+    <copyright>
+        <title>Creative Commons - Non commerciale - Non opere derivate</title>
+        <text>Questa licenza è la più restrittiva delle nostre sei licenze principali, permettendo a terzi soltanto di scaricare le tue opere e condividerle ad altri fino a che ti diano il giusto credito, ma non possono cambiarle in nessun modo od utilizzarle commercialmente.</text>
     </copyright>
     <copyright>
         <title>Other</title>

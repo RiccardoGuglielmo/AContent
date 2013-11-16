@@ -204,7 +204,7 @@ if (TRUE || $framed != TRUE) {
 					<th class="fl-uploader-file-name">File Name</th>
                                         <th class="fl-uploader-file-copyright">Copyright</th>
 					<th class="fl-uploader-file-size">Size</th>
-					<th class="fl-uploader-file-actions">DEL</th>
+					<th class="fl-uploader-file-actions"></th>
 				</tr>
             </table>
             
@@ -285,38 +285,29 @@ if (TRUE || $framed != TRUE) {
             </div>
             
             <br><tr>
-                    <td align="left"><label for="copyright">Copyright info: </label></td>
-                    <td align="left">
+                    <td><label for="copyright">Copyright info:</label></td>
+                    <td>
                         <select id='copyright_index'>
                             <?php
                                 $xml2 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                 foreach($xml2->copyright as $copyright)
-                                    if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
+                                    if($copyright->title != "Undefined" && $copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
                             ?>
                         </select>
                     </td>
             </tr>
             <tr>
-                    <td></td><td>
-                        <textarea id='copyright' rows="6" cols="65" style="display:none"></textarea>
+                    <td>
+                        <textarea id='copyright' rows="10" cols="65">Questa licenza permette a terzi di distribuire, modificare, ottimizzare ed utilizzare la tua opera come base, anche commercialmente, fino a che ti diano il credito per la creazione originale. Questa è la più accomodante delle licenze offerte. É raccomandata per la diffusione e l'uso massimo di materiali coperti da licenza.
+                        </textarea>
                     </td>
             </tr><br><br>
             
             <script type="text/javascript">
                 $(document).ready(function() {
                     $('#copyright_index').change(function () {
-                        var isFirstSelected = $("#copyright_index option:first-child" ).is(':selected');
-                        var isSecondSelected = $("#copyright_index option:first-child" ).next().is(':selected');
                         var copyright_title_selected = $("#copyright_index option:selected").text();
-
                         $('#copyright').attr("readonly",true);
-
-                        if (isFirstSelected || isSecondSelected) {
-                            $('#copyright').hide();
-                        } else {
-                            $('#copyright').show();
-                        }
-
                         $.ajax({ type: "GET", url: "include/copyrights/copyrights.xml", dataType: "xml", success: function(xml) {
                             $(xml).find('copyright').each(function() {
                               if (copyright_title_selected === $(this).find('title').text()) {
@@ -475,7 +466,7 @@ if ($a_type > 0) {
 </div>
 <?php }?>
 
-<table class="data static" align="left" summary="" border="0" rules="groups" style="margin-left: 180px; width: 700px">
+<table class="data static" align="left" summary="" border="0" rules="groups" style="margin-left: 225px; width: 700px">
 
     <thead>
         <tr>
@@ -486,8 +477,8 @@ if ($a_type > 0) {
         <tr>
                 <th scope="col" style="width: 5px"><input type="checkbox" name="checkall" onclick="Checkall(checkform);" id="selectall" title="<?php echo _AT('select_all'); ?>" /></th>
                 <th style="width: 5px">&nbsp;</th>
-                <th scope="col" style="width: 70px"><?php echo _AT('name');   ?></th>
-                <th scope="col" style="text-align: center; width: 70px">Copyright</th>
+                <th scope="col" style="width: 140px"><?php echo _AT('name');   ?></th>
+                <th scope="col" style="text-align: center; width: 140px">Copyright</th>
                 <th scope="col" style="text-align: center; width: 70px"><?php echo _AT('date');   ?></th>
                 <th scope="col" style="text-align: center; width: 70px"><?php echo _AT('size');   ?></th>
         </tr>
@@ -561,7 +552,7 @@ if ($a_type > 0) {
                     if(!$MakeDirOn) {
                             $deletelink = '';
                     }
-
+echo $filename; exit();
                     $is_dir = true;
             } else if ($ext == 'zip') {
 
@@ -615,7 +606,7 @@ if ($a_type > 0) {
 
                     $files[$file1] .= '&nbsp;</td>';
 
-                    $files[$file1] .= '<td align="center">Copyright</td>';
+                    $files[$file1] .= '<td align="center" style="width: 250px">Copyright</td>';
 
                     $files[$file1] .= '<td align="center" style="white-space:nowrap">';
 

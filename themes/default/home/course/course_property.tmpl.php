@@ -139,11 +139,10 @@ require_once(TR_INCLUDE_PATH.'classes/CoursesUtility.class.php');
             $(document).ready(function() {
                 $('#copyright_index').change(function () {
                     var isFirstSelected = $("#copyright_index option:first-child" ).is(':selected');
-                    var isSecondSelected = $("#copyright_index option:first-child" ).next().is(':selected');
                     var isLastSelected = $("#copyright_index option:last-child" ).is(':selected');
                     var copyright_index_selected = $("#copyright_index option:selected").text();
                     
-                    if (isFirstSelected || isSecondSelected) {
+                    if (isFirstSelected) {
                         $('#copyright').hide();
                     } else {
                         $('#copyright').show();

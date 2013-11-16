@@ -1,25 +1,22 @@
-.fl-uploader{width:600px;position:relative;clear:both;}
-table.fl-uploader-header{width:600px;margin-bottom:0;border-bottom:1px solid #999;color:#333;font-size:.9em;font-weight:bold;}
-.fl-uploader-header tr{width:100%;}
+.fl-uploader{width:670px;position:relative;clear:both;}
+table.fl-uploader-header{width:670px;margin-bottom:0;border-bottom:1px solid #999;color:#333;font-size:.9em;font-weight:bold;}
+.fl-uploader-header tr{width:670px;}
 .fl-uploader-header th{text-align:left;border:none;}
-.fl-uploader-header th.fl-uploader-file-name{width:27em;}
-.fl-uploader-header .fl-uploader-file-size{text-align:right;white-space:nowrap;}
-.fl-uploader-header .fl-uploader-file-copyright{text-align:right;white-space:nowrap;}
+.fl-uploader-header th.fl-uploader-file-name,.fl-uploader-queue td.fl-uploader-file-name{width:140px;text-align:left;}
+.fl-uploader-header .fl-uploader-file-copyright,.fl-uploader-queue .fl-uploader-file-copyright{width:420px;text-align:center}
+.fl-uploader-header .fl-uploader-file-size,.fl-uploader-queue .fl-uploader-file-size{width:70px;text-align:right;}
 .fl-uploader-browse-instructions{background-color:#F0F9FF;color:#666;text-align:center;padding:6px;}
 .fl-scrollable-scroller{display:block;position:relative;overflow:auto;overflow-x:hidden;overflow-y:auto;max-height:160px;}
 .fl-scrollable-inner{position:relative;overflow:hidden;}
-table.fl-uploader-queue{width:600px;margin:0;}
+table.fl-uploader-queue{width:670px;margin:0;}
 .fl-uploader-queue tr.fl-uploader-dim{color:#666;}
 .fl-uploader-queue caption{display:none;}
-.fl-uploader-queue tbody{width:100%;z-index:6;display:block;font-size:.9em;}
+.fl-uploader-queue tbody{width:670px;display:block;font-size:.9em;}
 .fl-uploader-queue tr:focus,.fl-uploader-queue tr.fl-uploader-file-state-ready:hover{background-color:#FFF9DC;}
-.fl-uploader-queue td{border:none;border-bottom:1px solid #C5C5C5;margin:0;text-align:left;padding:3px 6px;}
-.fl-uploader-queue td.fl-uploader-file-name{width:26em;overflow:hidden;font-weight:normal;}
-.fl-uploader-queue .fl-uploader-file-size{width:100%;text-align:right;white-space:nowrap;}
-.fl-uploader-queue .fl-uploader-file-copyright{width:100%;text-align:right;white-space:nowrap;}
-.fl-uploader-queue .fl-uploader-file-actions,.fl-uploader-header .fl-uploader-file-actions{padding-right:15px;white-space:nowrap;text-align:right;}
+.fl-uploader-queue td{border:none;border-bottom:1px solid #C5C5C5;margin:0;text-align:center;}
+.fl-uploader-queue .fl-uploader-file-actions,.fl-uploader-header .fl-uploader-file-actions{width:20px;white-space:nowrap;text-align:right;}
 .fl-uploader-queue .fl-uploader-file-actions .fl-uploader-dim{border:1px solid transparent;background-color:transparent;cursor:auto;}
-.fl-uploader-file-actions button{border:1px solid transparent;height:22px;width:24px;overflow:hidden;background-color:transparent;background-attachment:scroll;background-repeat:no-repeat;background-position:1px 1px;padding:0;margin:0;}
+.fl-uploader-file-actions button{width:40px;border:1px solid transparent;height:22px;width:24px;overflow:hidden;background-color:transparent;background-attachment:scroll;background-repeat:no-repeat;background-position:1px 1px;padding:0;margin:0;}
 .fl-uploader-file-actions .fl-uploader-file-action-remove{background-image:url(../images/remove.png);cursor:pointer;}
 .fl-uploader-file-actions .fl-uploader-file-action-remove:hover,tr:focus .fl-uploader-file-actions .fl-uploader-file-action-remove{border:1px solid #CCC;background-color:#FFF;}
 tr.fl-uploader-file-state-uploaded button{background-image:url(../images/tick.png);}
