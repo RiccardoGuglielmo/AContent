@@ -101,6 +101,9 @@ if (isset($_POST['submit'])) {
 					$msg->addFeedback($f);
 				}
 
+                                $query = 'INSERT INTO ac_content_copyright_of_file VALUES ('.$_POST["_course_id"].',"'.$_FILES['uploadedfile']['name'].'","'.$_POST["copy_sf"].'")';
+                                mysql_query($query);
+
 				/* copy the file in the directory */
 				$result = move_uploaded_file( $_FILES['uploadedfile']['tmp_name'], $path.$_FILES['uploadedfile']['name'] );
 

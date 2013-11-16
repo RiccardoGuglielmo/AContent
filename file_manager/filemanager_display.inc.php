@@ -425,11 +425,11 @@ if (TRUE || $framed != TRUE) {
                 ?><br><br><tr>
                         <td><label>Copyright:</label></td>
                         <td>
-                            <select id='copyright_index_sf'>
+                            <select name='copy_sf'>
                                 <?php
                                     $xml3 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                     foreach($xml2->copyright as $copyright)
-                                        if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
+                                        if($copyright->title != "Other") echo '<option value="'.$copyright->title.'">'.$copyright->title.'</option>';
                                 ?>
                             </select>
                         </td>
@@ -440,6 +440,11 @@ if (TRUE || $framed != TRUE) {
                         </td>
                 </tr><br><br><br><?php
 		echo '<input type="submit" name="submit" value="'._AT('upload').'" class="button" />';
+                echo '<input type="hidden" name="copy" value ="';
+                    if (isset($_POST["copy_sf"]))
+                        echo stripslashes(htmlspecialchars($_POST["copy_sf"]));
+                    else echo "ERROR!!!";
+                echo '" />';
 		echo '<input type="hidden" name="_course_id" value ="'.$_course_id.'" />';
 		echo '<input type="hidden" name="pathext" value="'.$pathext.'" />  ';
 
