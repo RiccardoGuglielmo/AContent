@@ -50,7 +50,7 @@ $path = TR_CONTENT_DIR . $_course_id.'/'.$_POST['pathext'];
 
 if (isset($_POST['submit'])) {
     if($_FILES['file']) {
-       $_FILES['uploadedfile'] = $_FILES['file']; 
+       $_FILES['uploadedfile'] = $_FILES['file'];
     }
 	if($_FILES['uploadedfile']['name'])	{
 		$_FILES['uploadedfile']['name'] = trim($_FILES['uploadedfile']['name']);
@@ -101,8 +101,11 @@ if (isset($_POST['submit'])) {
 					$msg->addFeedback($f);
 				}
 
-                                $query = 'INSERT INTO ac_content_copyright_of_file VALUES ('.$_POST["_course_id"].',"'.$_FILES['uploadedfile']['name'].'","'.$_POST["copy_sf"].'")';
-                                mysql_query($query);
+                                // for copyright:
+                                    $contentDAO = new ContentDAO();
+                                    $query = 'INSERT INTO '.TABLE_PREFIX.'content_copyright_of_file VALUES ('.$_POST["_course_id"].',"'.$_FILES['uploadedfile']['name'].'","'.$_POST["copy_sf"].'")';
+                                    $contentDAO->execute($query);
+                                /////////////////
 
 				/* copy the file in the directory */
 				$result = move_uploaded_file( $_FILES['uploadedfile']['tmp_name'], $path.$_FILES['uploadedfile']['name'] );
