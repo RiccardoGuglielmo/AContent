@@ -425,7 +425,7 @@ if (TRUE || $framed != TRUE) {
                 ?><br><br><tr>
                         <td><label>Copyright:</label></td>
                         <td>
-                            <select name='copy_sf'>
+                            <select id='copy_sf' name='copy_sf'>
                                 <?php
                                     $xml3 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                     foreach($xml3->copyright as $copyright)
@@ -462,9 +462,9 @@ if (TRUE || $framed != TRUE) {
                 
         <script type="text/javascript">
             $(document).ready(function() {
-                $('#copyright_index_sf').change(function () {
-                    var isFirstSelected = $("#copyright_index_sf option:first-child" ).is(':selected');
-                    var copyright_index_selected = $("#copyright_index_sf option:selected").text();
+                $('#copy_sf').change(function () {
+                    var isFirstSelected = $("#copy_sf option:first-child" ).is(':selected');
+                    var copyright_index_selected = $("#copy_sf option:selected").text();
                     
                     if (isFirstSelected) $('#copyright_sf').hide();
                     else $('#copyright_sf').show();
