@@ -67,14 +67,11 @@
 					<tr class="flc-uploader-file-tmplt flc-uploader-file">
 						<td class="flc-uploader-file-name fl-uploader-file-name">File Name Placeholder</td>
                                                 <td class="flc-uploader-file-copyright fl-uploader-file-copyright">
-                                                    <select id='copy_index'>
+                                                    <select name='copy_sf'>
                                                         <?php
                                                             $xml1 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                                             foreach($xml1->copyright as $copyright)
-                                                                if($copyright->title != "Other") echo '<option>'.$copyright->title.'</option>';
-                                                            
-                                                            
-                                                            
+                                                                if($copyright->title != "Other") echo '<option value="'.$copyright->title.'">'.$copyright->title.'</option>';
                                                         ?>
                                                     </select>
                                                 </td>

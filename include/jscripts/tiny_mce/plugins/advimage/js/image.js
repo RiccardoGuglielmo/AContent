@@ -175,6 +175,10 @@ var ImageDialog = {
 			ed.dom.setAttribs('__mce_tmp', args);
 			ed.dom.setAttrib('__mce_tmp', 'id', '');
 			ed.undoManager.add();
+                        
+                        // for copyright:
+                            ed.execCommand('mceInsertContent', false, '<p><em style="color:red;">Copyright: '+nl.src.value+'</em></p>', {skip_undo : 1});
+                        /////////////////
 		}
 
 		tinyMCEPopup.close();
