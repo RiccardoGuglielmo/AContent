@@ -648,7 +648,6 @@ if (TRUE || $framed != TRUE) {
                         // for copyright:
                                 $query = 'SELECT copyright FROM '.TABLE_PREFIX.'content_copyright_of_file WHERE course_id = '.$_course_id.' AND filename = "'.$filename.'"';
                                 $copy_result = $contentDAO->execute($query);
-
                                 $files[$file1] .= '<td align="center" style="width: 250px">'.$copy_result[0][copyright].'</td>';
                         /////////////////
 

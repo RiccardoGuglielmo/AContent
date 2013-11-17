@@ -2,7 +2,7 @@
  * $Id: $
  *
  * @author Laurel A. Williams
- * @copyright Copyright © 2008, ATutor, All rights reserved.
+ * @copyright Copyright ï¿½ 2008, ATutor, All rights reserved.
  */
 
 

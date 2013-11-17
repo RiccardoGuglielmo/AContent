@@ -17,6 +17,9 @@ require_once(TR_INCLUDE_PATH.'classes/DAO/PrimaryResourcesTypesDAO.class.php');
 require_once(TR_INCLUDE_PATH.'classes/DAO/SecondaryResourcesDAO.class.php');
 require_once(TR_INCLUDE_PATH.'classes/DAO/SecondaryResourcesTypesDAO.class.php');
 require_once(TR_INCLUDE_PATH.'classes/FileUtility.class.php');
+require_once(TR_INCLUDE_PATH.'classes/DAO/CoursesDAO.class.php');
+
+$contentDAO = new ContentDAO();
 
 global $_course_id;
 Utility::authenticate(TR_PRIV_ISAUTHOR_OF_CURRENT_COURSE);
@@ -131,6 +134,10 @@ if (isset($_POST['submit_yes'])) {
 			$_dirs[$countd]  = $list_item;
 			$countd++;
 		} else {
+                        // for copyright:
+                                $query = 'DELETE FROM '.TABLE_PREFIX.'content_copyright_of_file WHERE course_id = '.$_course_id.' AND filename = "'.$list_item.'"';
+                                $contentDAO->execute($query);
+                        /////////////////
 			$_files[$countf] = $list_item;
 			$countf++;
 		}
