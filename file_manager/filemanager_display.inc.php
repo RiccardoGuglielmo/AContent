@@ -219,7 +219,7 @@ if (TRUE || $framed != TRUE) {
 					<tr class="flc-uploader-file-tmplt flc-uploader-file">
 						<td class="flc-uploader-file-name fl-uploader-file-name">File Name Placeholder</td>
                                                 <td class="flc-uploader-file-copyright fl-uploader-file-copyright">
-                                                    <select name='copy_sf'>
+                                                    <select name='copy_sf_'>
                                                         <?php
                                                             $xml1 = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
                                                             foreach($xml1->copyright as $copyright)
@@ -339,7 +339,7 @@ if (TRUE || $framed != TRUE) {
                     uploadURL: '<?php echo TR_BASE_HREF; ?>file_manager/upload.php',
                     fileUploadLimit: 5,
                     fileQueueLimit: 2,
-                    postParams: {pathext: '<?php echo $pathext; ?>', type: 'ajax', submit: 'submit', _course_id: '<?php echo $_course_id; ?>'},
+                    postParams: { pathext: '<?php echo $pathext; ?>', type: 'ajax', submit: 'submit', _course_id: '<?php echo $_course_id; ?>' },
                     fileSizeLimit: <?php echo $my_MaxCourseSize/1024; ?>
                 },
                 events: {
@@ -440,11 +440,6 @@ if (TRUE || $framed != TRUE) {
                         </td>
                 </tr><br><br><br><?php
 		echo '<input type="submit" name="submit" value="'._AT('upload').'" class="button" />';
-                echo '<input type="hidden" name="copy" value ="';
-                    if (isset($_POST["copy_sf"]))
-                        echo stripslashes(htmlspecialchars($_POST["copy_sf"]));
-                    else echo "ERROR!!!";
-                echo '" />';
 		echo '<input type="hidden" name="_course_id" value ="'.$_course_id.'" />';
 		echo '<input type="hidden" name="pathext" value="'.$pathext.'" />  ';
 
