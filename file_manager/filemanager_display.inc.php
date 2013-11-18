@@ -300,7 +300,7 @@ if (TRUE || $framed != TRUE) {
             </tr>
             <tr>
                     <td>
-                        <textarea id='copyright' rows="10" cols="65">Questa licenza permette a terzi di distribuire, modificare, ottimizzare ed utilizzare la tua opera come base, anche commercialmente, fino a che ti diano il credito per la creazione originale. Questa è la più accomodante delle licenze offerte. É raccomandata per la diffusione e l'uso massimo di materiali coperti da licenza.
+                        <textarea id='copyright' rows="10" cols="65">This license lets others distribute, remix, tweak, and build upon your work, even commercially, as long as they credit you for the original creation. This is the most accommodating of licenses offered. Recommended for maximum dissemination and use of licensed materials.
                         </textarea>
                     </td>
             </tr><br><br>
