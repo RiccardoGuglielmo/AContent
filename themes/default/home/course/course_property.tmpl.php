@@ -84,15 +84,11 @@ require_once(TR_INCLUDE_PATH.'classes/CoursesUtility.class.php');
                             <td><select id='copyright_index'>
                                 <?php
                                     $xml = simplexml_load_file(TR_INCLUDE_PATH.'copyrights/copyrights.xml');
-                                    $copyright_number = 0;
                                     foreach($xml->copyright as $copyright)
-                                    {
-                                        $copyright_number++;
                                         echo '<option value="copyright'.$copyright_number.'">'.$copyright->title.'</option>';
-                                    }
                                 ?>
                             </select></td>
-                </tr>   
+                </tr>
                 <tr>
                         <td></td><td align="left"><textarea name="copyright" rows="6" cols="65" id="copyright" style="display:none">
                             <?php
